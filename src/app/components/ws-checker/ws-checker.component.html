@@ -1,0 +1,9 @@
+<div class="input-line">
+    <p [class]="'status status-' + webSocketService.statusString.toLowerCase()">Status: {{webSocketService.statusString}}</p>
+    <input class="msg-input" [(ngModel)]="msg" placeholder="Message for ws">
+    <button class="send-btn" (click)="send()">Send the message</button>
+    <button class="reconnect-btn" (click)="reconnect()">Reconnect</button>    
+</div>
+
+<h2 class="msg-header">Recieved messages: </h2>
+<h3 class="msg" *ngFor="let message of webSocketService.recievedMessages">{{ message }}</h3>

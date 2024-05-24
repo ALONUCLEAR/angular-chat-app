@@ -1,0 +1,72 @@
+@import '../../../styles.less';
+
+:host {
+  .input-line {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    margin-bottom: 2em;
+
+    > * {
+        height: fit-content;
+    }
+
+    button, .msg-input {
+        background-color: @dark-color;
+        color: white;
+        border-color: white;
+    }
+
+    button {
+        border-radius: 0.5em;
+        border-style: solid;
+        padding: 0.3em;
+
+        &:hover {
+            background-color: white;
+            border-color: black;
+            color: black;
+        }
+    }
+
+    .msg-input {
+        border-style: dashed;
+        padding: 0.2em;
+
+        &::placeholder {
+            color: white;
+        }
+    }
+
+    .status {
+      color: white;
+      border-radius: 1em;
+      width: fit-content;
+      padding: 0.2em;
+      margin: 0;
+
+      &.status-connecting {
+        background-color: lightgreen;
+      }
+      &.status-open {
+        background-color: green;
+      }
+      &.status-closing {
+        background-color: yellow;
+      }
+      &.status-closed {
+        background-color: gray;
+      }
+      &.status-invalid-status {
+        background-color: red;
+      }
+    }
+  }
+
+  .msg {
+    padding: 0.4em 0.2em;
+    border-radius: 1em;
+    border: 0.1em solid black;
+    width: fit-content;
+  }
+}
