@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Message } from '../types/message';
 
 export interface WsService {
   recievedMessages: string[];
@@ -12,14 +13,23 @@ export interface WsService {
   providedIn: 'root',
 })
 export class webSocketService implements WsService {
-  private readonly PORT: number = 1234;
+  private readonly route = "s://localhost:1234";
   private webSocket: WebSocket;
   public recievedMessages: string[] = [];
   public statusString = this.getStatus(-1);
+  public lastMessagesArray: Message[] = [];
 
   constructor() {
     // give it a default url that doesn't work so that it doesn't create two ws connections
-    this.webSocket = new WebSocket(`wss://localhost:${this.PORT}`);
+    this.webSocket = new WebSocket(this.getWsRoute());
+  }
+
+  private getWsRoute(extension = ''): string {
+    return 'ws' + this.route + extension;
+  }
+
+  private getHttpRoute(extentsion = ''): string {
+    return 'http' + this.route + extentsion;
   }
 
   private getStatus(stateNum: number): string {
@@ -38,25 +48,44 @@ export class webSocketService implements WsService {
   }
 
   openConnection(): void {
-    this.webSocket = new WebSocket(`wss://localhost:${this.PORT}/ws`);
+    this.webSocket = new WebSocket(this.getWsRoute('/ws'));
 
-    this.webSocket.onopen = (e) => {
+    this.webSocket.onopen = async (e) => {
       console.log('WebSocket has opened!');
       console.log(e);
       this.statusString = this.getStatus(this.webSocket.readyState);
+      await this.getExistingMessages();
     };
 
     this.webSocket.onmessage = (e) => {
       console.log(e);
-      this.recievedMessages.push(e.data);
+      const message: string = e.data;
+      this.recievedMessages.push(message);
       this.statusString = this.getStatus(this.webSocket.readyState);
+
+      if (message.startsWith('[')) {
+        // if it doesn't start as an array, than it's just an echoed message
+        this.lastMessagesArray = JSON.parse(message);
+      }
     };
 
     this.webSocket.onclose = (e) => {
       console.log('WebSocket closing!');
       console.log(e);
       this.statusString = this.getStatus(this.webSocket.readyState);
+      this.lastMessagesArray = [];
     };
+  }
+
+  private async getExistingMessages(): Promise<void> {
+    const res = await fetch(this.getHttpRoute(`/messages`));
+
+    try {
+      const messages: Message[] = await res.json();
+      this.lastMessagesArray = messages;
+    } catch (e) {
+      console.error('Something went wrong when getting existing messages - ', e);
+    }
   }
 
   sendMessage(message: string): void {

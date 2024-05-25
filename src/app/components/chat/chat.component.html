@@ -1,0 +1,13 @@
+<header>
+    <input [(ngModel)]="username" class="username-input" placeholder="Your name">
+</header>
+<div class="messages">
+    <chat-bubble *ngFor="let message of wsService.lastMessagesArray"
+        [currentUserId]="userId" [message]="message">
+    </chat-bubble>
+</div>
+
+<footer>
+    <textarea [(ngModel)]="msg" [minlength]="1" [rows]="3" class="msg-input" placeholder="New Message"></textarea>
+    <button class="send-btn" (click)="send()">Send</button>
+</footer>

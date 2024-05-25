@@ -1,0 +1,58 @@
+@import "../../../styles.less";
+
+:host {
+  header {
+    margin-bottom: 1em;
+    border-bottom: 0.1em dotted white;
+    width: fit-content;
+    > input {
+      background: none;
+      border: none;
+
+      &::placeholder {
+        color: white;
+      }
+    }
+  }
+
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+
+    > * {
+      flex: 1;
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    width: max-content;
+    color: white;
+    background-color: @dark-color;
+    border: none;
+
+    @input-width: 90vw;
+    @buffer: 0.8vw;
+    @border-size: 0.2em;
+    .msg-input {
+      margin: 0;
+      width: @input-width;
+      background: gray;
+      &::placeholder {
+        color: white;
+      }
+    }
+    .send-btn {
+      margin: 0;
+      width: 100vw - @input-width - @buffer;
+
+      background-color: lightgreen;
+    }
+
+    border: @border-size solid black;
+  }
+}

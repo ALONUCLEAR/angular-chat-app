@@ -1,0 +1,33 @@
+@import "../../../../styles.less";
+
+:host {
+  .msg {
+    margin: 0;
+    padding: 1em;
+    border-radius: 0.3em;
+    border: 0.1em solid black;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .content {
+      font-size: 20px;
+    }
+
+    &.stranger-msg {
+      .title {
+        float: left;
+        margin-bottom: 1em;
+      }
+    }
+
+    &.user-msg {
+      float: right;
+    }
+  }
+}

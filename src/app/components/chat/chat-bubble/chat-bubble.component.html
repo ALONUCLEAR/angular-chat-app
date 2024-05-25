@@ -1,0 +1,13 @@
+<h1 *ngIf="!currentUserId">Error!!! Invalid user id!</h1>
+<ng-container *ngIf="currentUserId">
+    <div class="msg user-msg" [ngStyle]="{'background-color': userColor}" *ngIf="currentUserId === message?.userId; else strangerMessage">
+        <h4 class="content">{{ message?.content }}</h4>
+    </div>
+</ng-container>
+
+<ng-template #strangerMessage>
+    <div class="msg stranger-msg" [ngStyle]="{'background-color': otherColor}">
+        <h6 class="title">{{ message?.userName }}</h6>
+        <h4 class="content">{{ message?.content }}</h4>
+    </div>
+</ng-template>
